@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook-git
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/thegostev/capa-lab.git
+    targetRevision: HEAD
+    path: apps/guestbook
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: guestbook
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
