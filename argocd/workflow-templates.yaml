@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: workflow-templates
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/thegostev/capa-lab.git
+    targetRevision: HEAD
+    path: workflow-templates
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo             # where the Workflows controller runs
