@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: capa-greeting-
+  name: capa-greeting
 spec:
   entrypoint: greet
   arguments:
