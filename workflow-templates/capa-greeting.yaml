@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: capa-greeting-
+spec:
+  entrypoint: greet
+  arguments:
+    parameters:
+    - name: name
+      value: Alex          # the default
+  templates:
+  - name: greet
+    inputs:
+      parameters:
+      - name: name
+    container:
+      image: busybox
+      command: [echo]
+      args: ["hello {{inputs.parameters.name}}"]
