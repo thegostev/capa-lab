@@ -8,7 +8,7 @@ spec:
   source:                # read
     repoURL: https://github.com/thegostev/capa-lab.git
     targetRevision: HEAD
-    path: apps/guestbook
+    path: apps/guestbok
   destination:           # deploy
     server: https://kubernetes.default.svc
     namespace: drill
