@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:                # read
-    repoURL: https://github.com/thegostev/capa-lab.git-gat
-    targetRevision: HEAD
+    repoURL: https://github.com/thegostev/capa-lab.git
+    targetRevision: HEAD-not-really
     path: apps/guestbook
   destination:           # deploy
     server: https://kubernetes.default.svc
