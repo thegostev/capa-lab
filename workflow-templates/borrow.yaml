@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: borrow-
+spec:
+  entrypoint: main
+  templates:
+  - name: main
+    steps:
+    - - name: from-a-step
+        templateRef:
+          name: capa-greeting       # which WorkflowTemplate
+          template: greet           # which template inside it
+        arguments:
+          parameters: [{name: name, value: step}]
+    - - name: run-the-dag
+        template: as-dag
+  - name: as-dag
+    dag:
+      tasks:
+      - name: from-a-task
+        templateRef: {name: capa-greeting, template: greet}
+        arguments:
+          parameters: [{name: name, value: task}]
