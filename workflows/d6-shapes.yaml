@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: d6-shapes-
+spec:
+  entrypoint: as-dag
+  templates:
+  - name: as-dag
+    dag:
+      tasks:
+      - name: A
+        template: quick
+      - name: B
+        depends: "A"
+        template: quick
+      - name: C
+        depends: "A"
+        template: slow
+      - name: D
+        depends: "B"
+        template: quick
+  - name: as-steps
+    steps:
+    - - name: A
+        template: quick
+    - - name: B
+        template: quick
+      - name: C
+        template: slow
+    - - name: D
+        template: quick
+  - name: quick
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["sleep 2; echo quick"]
+  - name: slow
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["sleep 20; echo slow"]
