@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: d3-when-
+spec:
+  entrypoint: release
+  arguments:
+    parameters: [{name: env, value: dev}]
+  templates:
+  - name: echo
+    inputs:
+      parameters: [{name: msg}]
+    container:
+      image: alpine:3.23
+      command: [echo, "{{inputs.parameters.msg}}"]
+  - name: release
+    dag:
+      tasks:
+      - {name: build,  template: echo, arguments: {parameters: [{name: msg, value: build}]}}
+      - name: deploy
+        depends: "build"
+        when: "{{workflow.parameters.env}} == prod"
+        template: echo
+        arguments: {parameters: [{name: msg, value: deploy}]}
+      - {name: notify, depends: "deploy",           template: echo, arguments: {parameters: [{name: msg, value: notify}]}}
+      - {name: audit,  depends: "deploy.Succeeded", template: echo, arguments: {parameters: [{name: msg, value: audit}]}}

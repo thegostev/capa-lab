@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: failfast-
+spec:
+  entrypoint: graph
+  templates:
+  - name: graph
+    dag:
+      failFast: true
+      tasks:
+      - name: tests
+        template: fail-after-2s
+      - name: image
+        template: slow-15s
+      - name: package
+        depends: "image"
+        template: say-package
+  - name: fail-after-2s
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["sleep 2; echo tests failed; exit 1"]
+  - name: slow-15s
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["sleep 15; echo image built"]
+  - name: say-package
+    container:
+      image: alpine:3.23
+      command: [echo, "package done"]
