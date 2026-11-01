@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: continue-
+spec:
+  entrypoint: main
+  templates:
+  - name: main
+    steps:
+    - - name: risky
+        template: fail
+        continueOn:
+          failed: true
+    - - name: next
+        template: say-next
+  - name: fail
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["echo risky failed; exit 1"]
+  - name: say-next
+    container:
+      image: alpine:3.23
+      command: [echo, "next ran"]

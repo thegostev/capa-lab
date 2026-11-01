@@ -7,7 +7,7 @@ spec:
   templates:
   - name: graph
     dag:
-      failFast: true
+      failFast: false
       tasks:
       - name: tests
         template: fail-after-2s
