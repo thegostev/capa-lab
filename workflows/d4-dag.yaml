@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: d4-dag-
+spec:
+  entrypoint: here
+  templates:
+  - name: here
+    dag:
+      tasks:
+      - name: D
+        depends: "B && C"
+        template: work
+      - name: C
+        depends: "A"
+        template: work
+      - name: B
+        depends: "A"
+        template: work
+      - name: A
+        template: work
+  - name: work
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["sleep 3; echo done"]
